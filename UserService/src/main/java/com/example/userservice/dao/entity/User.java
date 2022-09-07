@@ -67,11 +67,8 @@ public class User {
 
     @JsonPOJOBuilder(withPrefix = "set")
     public static class Builder{
-        @Id
         private Long userId;
-        @CreatedDate
         private LocalDateTime createdDate;
-        @Version
         private LocalDateTime updatedDate;
         private String city;
         private Integer pageSize;

@@ -12,7 +12,7 @@ public class PageSizeInlineKeyboard extends AbstractInlineKeyboard{
     private String pageSizeMessage;
 
     public PageSizeInlineKeyboard(@Value("${app.pageSize.keyboard}") List<String> buttons) {
-        super(ECallbackAction.PAGE, buttons);
+        super(ECallbackAction.PAGE_SIZE, buttons);
     }
 
     @Override

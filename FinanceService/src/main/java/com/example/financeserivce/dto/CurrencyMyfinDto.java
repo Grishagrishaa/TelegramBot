@@ -9,13 +9,9 @@ import java.util.Currency;
 
 @JsonDeserialize(builder = CurrencyMyfinDto.Builder.class)
 public class CurrencyMyfinDto implements ICurrencyDto {
-    @JsonProperty
     private final String bankName;
-    @JsonProperty
     private final String currencyName;
-    @JsonProperty
     private final Float bankBuy;
-    @JsonProperty
     private final Float bankSell;
 
     public CurrencyMyfinDto(Builder builder) {

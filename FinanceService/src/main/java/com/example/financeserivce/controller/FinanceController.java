@@ -6,14 +6,11 @@ import com.example.financeserivce.enums.ECity;
 import com.example.financeserivce.enums.EConvertCurrency;
 import com.example.financeserivce.enums.ERatesCurrency;
 import com.example.financeserivce.service.api.IFinanceService;
+import com.example.financeserivce.service.pagination.Page;
+import com.example.financeserivce.service.pagination.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/finance")
@@ -37,18 +34,21 @@ public class FinanceController implements IFinanceController {
     }
 
     @Override
-    @GetMapping("/rates/{currency}/city/{city}/")
-    public ResponseEntity<List<ICurrencyDto>> getRates(@PathVariable String city, @PathVariable String currency) {
-        return new ResponseEntity<>(service.getRates(
-                                    city == null ? ECity.MINSK : ECity.valueOf(city.toUpperCase()),
-                                    currency == null ? ERatesCurrency.USD : ERatesCurrency.valueOf(currency.toUpperCase())),
+    @GetMapping("/rates/{currency}/city/{city}")//return best Rates based on cities
+    public ResponseEntity<Page<ICurrencyDto>> getRates(@RequestParam(required = false, defaultValue = "1", name = "page") Integer page,
+                                                       @RequestParam(required = false, defaultValue = "5", name = "size") Integer size,
+                                                       @PathVariable String city, @PathVariable String currency) {
+        return new ResponseEntity<>(service.getRates(PageRequest.of(page, size),
+                                    ECity.valueOf(city.toUpperCase()),
+                                    ERatesCurrency.valueOf(currency.toUpperCase())),
                                     HttpStatus.OK);
     }
 
     @Override
     @GetMapping("/rates")
-    public ResponseEntity<List<ICurrencyDto>> getNbrbRates() {
-        return new ResponseEntity<>(service.getNbrbRates(), HttpStatus.OK);
+    public ResponseEntity<Page<ICurrencyDto>> getNbrbRates(@RequestParam(required = false, defaultValue = "1", name = "page") Integer page,
+                                                           @RequestParam(required = false, defaultValue = "5", name = "size") Integer size) {//return NBRB rates
+        return new ResponseEntity<>(service.getNbrbRates(PageRequest.of(page, size)), HttpStatus.OK);
     }
 
     @Override

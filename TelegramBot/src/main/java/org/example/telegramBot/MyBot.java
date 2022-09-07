@@ -45,9 +45,9 @@ public class MyBot extends TelegramLongPollingCommandBot {
     public void processNonCommandUpdate(Update update) {
         BotApiMethod sendMsg = null;
         if(update.hasMessage()){
-            sendMsg = service.getAnswer(update.getMessage());
+            sendMsg = service.handleMessage(update.getMessage());
         }else if(update.hasCallbackQuery()){
-            sendMsg = service.getAnswer(update.getCallbackQuery());
+            sendMsg = service.handleCallback(update.getCallbackQuery());
         }else {
             //todo default
         }

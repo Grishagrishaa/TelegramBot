@@ -2,7 +2,7 @@ package com.example.financeserivce.dto;
 
 
 import com.example.financeserivce.dto.api.ICurrencyDto;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 
@@ -10,14 +10,17 @@ import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
 public class CurrencyMyfinNbrbDto implements ICurrencyDto {
     private final String currencyName;
     private final Float rate;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private final Float tomorrowRate;
     private final String code;
     private final Integer scale;
 
-    private CurrencyMyfinNbrbDto(Builder builder) {
+    private CurrencyMyfinNbrbDto(Builder builder, Float tomorrowRate) {
         this.currencyName = builder.currencyName;
         this.rate = builder.rate;
         this.code = builder.code;
         this.scale = builder.scale;
+        this.tomorrowRate = tomorrowRate;
     }
 
     public String getCurrencyName() {
@@ -26,6 +29,10 @@ public class CurrencyMyfinNbrbDto implements ICurrencyDto {
 
     public Float getRate() {
         return rate;
+    }
+
+    public Float getTomorrowRate() {
+        return tomorrowRate;
     }
 
     public String getCode() {
@@ -40,6 +47,7 @@ public class CurrencyMyfinNbrbDto implements ICurrencyDto {
     public static class Builder{
         private String currencyName;
         private Float rate;
+        private  Float tomorrowRate;
         private String code;
         private Integer scale;
 
@@ -53,6 +61,10 @@ public class CurrencyMyfinNbrbDto implements ICurrencyDto {
             return this;
         }
 
+        public Builder setTomorrowRate(Float tomorrowRate) {
+            this.tomorrowRate = tomorrowRate;
+            return this;
+        }
 
         public Builder setCode(String code) {
             this.code = code;
@@ -69,7 +81,7 @@ public class CurrencyMyfinNbrbDto implements ICurrencyDto {
         }
 
         public CurrencyMyfinNbrbDto build(){
-            return new CurrencyMyfinNbrbDto(this);
+            return new CurrencyMyfinNbrbDto(this, tomorrowRate);
         }
     }
 

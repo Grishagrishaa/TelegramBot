@@ -4,6 +4,7 @@ import com.example.financeserivce.dto.api.ICurrencyDto;
 import com.example.financeserivce.enums.ECity;
 import com.example.financeserivce.enums.EConvertCurrency;
 import com.example.financeserivce.enums.ERatesCurrency;
+import com.example.financeserivce.service.pagination.Page;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -16,9 +17,9 @@ public interface IFinanceController {
 
      ResponseEntity<EConvertCurrency[]> getConvertCurrencies();//отдаешь енамы values()
 
-     ResponseEntity<List<ICurrencyDto>> getNbrbRates();
+     ResponseEntity<Page<ICurrencyDto>> getNbrbRates(Integer page, Integer size);
 
-     ResponseEntity<List<ICurrencyDto>> getRates(String city, String currency);
+     ResponseEntity<Page<ICurrencyDto>> getRates(Integer page, Integer size, String city, String currency);
 
      ResponseEntity<Double> getConversionRatio(String original, String target);
 

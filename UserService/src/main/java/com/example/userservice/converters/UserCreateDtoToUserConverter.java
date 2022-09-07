@@ -11,10 +11,10 @@ public class UserCreateDtoToUserConverter implements Converter<UserCreateDto, Us
     public User convert(UserCreateDto dto) {
         return User.Builder.create()
                 .setUserId(dto.getUserId())
-                .setCreatedDate(null)
-                .setUpdatedDate(null)
-                .setCity(null)
-                .setPageSize(null)
+//                .setCreatedDate(null)//annotation set
+//                .setUpdatedDate(null)//annotation set
+                .setCity(dto.getCity())
+                .setPageSize(dto.getPageSize())
                 .build();
     }
 }

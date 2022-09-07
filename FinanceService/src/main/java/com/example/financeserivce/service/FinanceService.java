@@ -6,6 +6,8 @@ import com.example.financeserivce.enums.EConvertCurrency;
 import com.example.financeserivce.enums.ERatesCurrency;
 import com.example.financeserivce.service.api.IFinanceService;
 import com.example.financeserivce.service.api.IWebService;
+import com.example.financeserivce.service.pagination.Page;
+import com.example.financeserivce.service.pagination.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,13 +36,38 @@ public class FinanceService implements IFinanceService {
     }
 
     @Override
-    public List<ICurrencyDto> getRates(ECity city, ERatesCurrency currency) {
-        return webService.getMyfinRates(city, currency);
+    public Page<ICurrencyDto> getRates(PageRequest pageable, ECity city, ERatesCurrency currency) {
+        int pageNumber = pageable.getPage();
+        int pageSize = pageable.getSize();
+
+        List<ICurrencyDto> myfinRates = webService.getMyfinRates(city, currency);
+        int from = (pageNumber - 1) * pageSize;
+        int to = Math.min(from + pageSize, myfinRates.size());
+
+        return Page.Builder.<ICurrencyDto>create()
+                            .setContent(myfinRates.subList(from, to))
+                            .setTotalElements(myfinRates.size())
+                            .setSize(pageSize)
+                            .setTotalPages(myfinRates.size() % pageSize == 0 ?  myfinRates.size() / pageSize : myfinRates.size() / pageSize + 1)
+                            .build();
     }
 
     @Override
-    public List<ICurrencyDto> getNbrbRates() {
-        return webService.getMyfinRates(ECity.NBRB, null);
+    public Page<ICurrencyDto> getNbrbRates(PageRequest pageable) {
+        int pageNumber = pageable.getPage();
+        int pageSize = pageable.getSize();
+
+        List<ICurrencyDto> myfinRates = webService.getMyfinRates(ECity.NBRB, null);
+        int from = (pageNumber - 1) * pageSize;
+        int to = Math.min(from + pageSize, myfinRates.size());
+
+        return Page.Builder.<ICurrencyDto>create()
+                .setContent(myfinRates.subList(from, to))
+                .setTotalElements(myfinRates.size())
+                .setSize(pageSize)
+                .setTotalPages(myfinRates.size() % pageSize == 0 ?  myfinRates.size() / pageSize : myfinRates.size() / pageSize + 1)
+                .build();
+
     }
 
     @Override

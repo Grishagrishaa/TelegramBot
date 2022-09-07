@@ -1,16 +1,23 @@
 package com.example.financeserivce;
 
+import com.example.financeserivce.dto.CurrencyMyfinDto;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @SpringBootApplication
 public class FinanceServiceApplication {
 
     public static void main(String[] args) throws IOException {
         SpringApplication.run(FinanceServiceApplication.class, args);
-//        Document doc = Jsoup.connect("https://myfin.by/currency/minsk")
+//        Document doc = Jsoup.connect("https://myfin.by/currency/grodno")
 //                .userAgent("Chrome/4.0.249.0 Safari/532.5")
 //                .referrer("http://www.google.com")
 //                .get();
@@ -19,7 +26,7 @@ public class FinanceServiceApplication {
 //        List<CurrencyMyfinDto> currencyDtoList = Collections.synchronizedList(new ArrayList<>());
 //
 //        //working except grodno
-//        Elements trs = doc.getElementsByClass("c-currency-table__main-row c-currency-table__main-row--with-arrow");
+//        Elements trs = doc.getElementsByClass("currencies-courses__row-main");
 //        trs.forEach(t ->  {
 //            t.select("td").forEach(e -> currencyValues.add(e.text()));
 //            currencyDtoList.add(CurrencyMyfinDto.Builder.create()
@@ -47,6 +54,6 @@ public class FinanceServiceApplication {
 ////
 //
 //
-//        currencyDtoList.forEach(System.out::println);
+//        System.out.println(currencyDtoList);
     }
 }

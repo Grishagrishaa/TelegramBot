@@ -1,10 +1,10 @@
-package org.example.telegramBot.service.impl.currency;
+package org.example.telegramBot.service.impl.financeService;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
-import org.example.telegramBot.service.impl.currency.api.ICurrencyDto;
+import org.example.telegramBot.service.impl.financeService.api.ICurrencyDto;
 
 @JsonDeserialize(builder = CurrencyMyfinNbrbDto.Builder.class)
 public class CurrencyMyfinNbrbDto implements ICurrencyDto {

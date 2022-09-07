@@ -4,8 +4,8 @@ import com.example.financeserivce.dto.api.ICurrencyDto;
 import com.example.financeserivce.enums.ECity;
 import com.example.financeserivce.enums.EConvertCurrency;
 import com.example.financeserivce.enums.ERatesCurrency;
-
-import java.util.List;
+import com.example.financeserivce.service.pagination.Page;
+import com.example.financeserivce.service.pagination.PageRequest;
 
 public interface IFinanceService {
     ECity[] getCities();
@@ -15,9 +15,9 @@ public interface IFinanceService {
     ERatesCurrency[] getRatesCurrencies();
 
 
-    List<ICurrencyDto> getRates(ECity city, ERatesCurrency currency);
+    Page<ICurrencyDto> getRates(PageRequest pageable, ECity city, ERatesCurrency currency);
 
-    List<ICurrencyDto> getNbrbRates();
+    Page<ICurrencyDto> getNbrbRates(PageRequest pageable);
 
     Double getConversionRatio(EConvertCurrency original, EConvertCurrency target);
 }

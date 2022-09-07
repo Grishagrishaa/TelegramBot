@@ -1,19 +1,27 @@
 package org.example.telegramBot.service.impl;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserData {
+    @JsonProperty("user_id")
     private Long userId;
     private String city;
+    @JsonProperty("page_size")
     private Integer pageSize;
+
+    public UserData() {
+    }
 
     public UserData(Long userId) {
         this.userId = userId;
     }
 
-    public static UserData getDefaults(){
-        UserData userData = new UserData(9999999999L);
+    public static UserData getDefaults(Long userId){
+        UserData userData = new UserData(userId);
+
         userData.setCity(null);
-        userData.setPageSize(null);
+        userData.setPageSize(5);
         return userData;
     }
 

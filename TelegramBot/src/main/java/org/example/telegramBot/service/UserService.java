@@ -42,7 +42,9 @@ public class UserService {
                     .uri(userServiceUrl)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(BodyInserters.fromValue(userData))
-                    .retrieve();
+                    .retrieve()
+                    .bodyToMono(Object.class)
+                    .block();
 //                    .onStatus(HttpStatus::is4xxClientError, error -> Mono.error(new RuntimeException("API not found")))
 //                    .onStatus(HttpStatus::is5xxServerError, error -> Mono.error(new RuntimeException("Internal Server Error")));
     }
@@ -52,7 +54,10 @@ public class UserService {
                     .post()
                     .uri(userServiceUrl)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .retrieve();
+                    .body(BodyInserters.fromValue(userData))
+                    .retrieve()
+                    .bodyToMono(Object.class)
+                    .block();
 //                    .onStatus(HttpStatus::is4xxClientError, error -> Mono.error(new RuntimeException("API not found")))
 //                    .onStatus(HttpStatus::is5xxServerError, error -> Mono.error(new RuntimeException("Internal Server Error")));
     }

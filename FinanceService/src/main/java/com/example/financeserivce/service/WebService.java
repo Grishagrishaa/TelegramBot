@@ -96,20 +96,18 @@ public class WebService implements IWebService {
 
                 return currencyDtoList;
             case GRODNO:
-                Elements elements = doc.getElementsByAttributeValueStarting("class", "tr-tb");
-                elements.forEach(t -> {
+                Elements trs = doc.getElementsByClass("currencies-courses__row-main");
+                trs.forEach(t ->  {
                     t.select("td").forEach(e -> currencyValues.add(e.text()));
-                    if(nameTest.test(currencyValues)){
-                        currencyDtoList.add(mapCurrencyDto(currencyValues, city, currency));
-                    }
-
+                    currencyDtoList.add(mapCurrencyDto(currencyValues, ECity.GRODNO, currency)
+                    );
                     currencyValues.clear();
                 });
 
                 return currencyDtoList;
             default:
-                Elements trs = doc.getElementsByClass("c-currency-table__main-row c-currency-table__main-row--with-arrow");
-                trs.forEach(t ->  {
+                Elements el = doc.getElementsByClass("c-currency-table__main-row c-currency-table__main-row--with-arrow");
+                el.forEach(t ->  {
                     t.select("td").forEach(e -> currencyValues.add(e.text()));
                     currencyDtoList.add(mapCurrencyDto(currencyValues, city, currency)
                     );
@@ -121,13 +119,26 @@ public class WebService implements IWebService {
 
     private ICurrencyDto mapCurrencyDto(List<String>currencyValues, ECity city, ERatesCurrency currency){
         if(city == ECity.NBRB){
-            CurrencyMyfinNbrbDto dto = CurrencyMyfinNbrbDto.Builder
-                    .create()
-                    .setCurrencyName(currencyValues.get(0))
-                    .setRate(Float.valueOf(currencyValues.get(1)))
-                    .setCode(currencyValues.get(2))
-                    .setScale(Integer.valueOf(currencyValues.get(3)))
-                    .build();
+            CurrencyMyfinNbrbDto dto = null;
+            if(currencyValues.size() == 5){
+                dto = CurrencyMyfinNbrbDto.Builder
+                        .create()
+                        .setCurrencyName(currencyValues.get(0))
+                        .setRate(Float.valueOf(currencyValues.get(1)))
+                        .setTomorrowRate(Float.valueOf(currencyValues.get(2).substring(0,6)))
+                        .setCode(currencyValues.get(3))
+                        .setScale(Integer.valueOf(currencyValues.get(4)))
+                        .build();
+            }else {
+                dto = CurrencyMyfinNbrbDto.Builder
+                        .create()
+                        .setCurrencyName(currencyValues.get(0))
+                        .setRate(Float.valueOf(currencyValues.get(1)))
+                        .setCode(currencyValues.get(2))
+                        .setScale(Integer.valueOf(currencyValues.get(3)))
+                        .build();
+            }
+
 
             currencyValues.clear();
             return dto;

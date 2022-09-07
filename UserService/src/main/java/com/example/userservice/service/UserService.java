@@ -9,11 +9,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.NoSuchElementException;
 
 @Service
+@Transactional(readOnly = true)
 public class UserService implements IUserService {
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
     private final IUserRepository repository;
@@ -35,7 +37,9 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @Transactional
     public void saveUser(UserCreateDto user) {
+        logger.info("SERVICE | Save user invocation, user - {}", user);
         User newUser = conversion.convert(user, User.class);
         try{
             repository.save(newUser);
@@ -46,14 +50,16 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @Transactional
     public void updateUser(UserReadAndUpdateDto dto) {
         User user = getUser(dto.getUserId());
+        logger.info("SERVICE | Update user invocation, user - {}", user);
 
 
-//        if(dto.getCity() != null)user.setCity(dto.getCity());
-//        if(dto.getPageSize() != null)user.setPageSize(dto.getPageSize());
+        if(dto.getCity() != null)user.setCity(dto.getCity());
+        if(dto.getPageSize() != null)user.setPageSize(dto.getPageSize());
 
         repository.save(user);
-        logger.info("UPDATE USER - {}", user);
+        logger.info("SERVICE | UPDATE USER - {}, dto - {}", user, dto);
     }
 }
