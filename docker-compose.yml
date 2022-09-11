@@ -1,0 +1,55 @@
+version: '3.5'
+services:
+  db:
+    build: postgresql
+    image: telegram_postgresql:1.0.0
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - /docker-entrypoint-initdb.d
+    networks:
+      - telegram_ntwrk
+
+  pgadmin:
+    build: pgadmin
+    image: telegram_pgadmin:1.0.0
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "83:80"
+    networks:
+      - telegram_ntwrk
+
+  finance-Service:
+    build: finance_service
+    image: finance_service:1.0.0
+    networks:
+      - telegram_ntwrk
+
+  user-service:
+    build: user_service
+    image: user_service:1.0.0
+    networks:
+        - telegram_ntwrk
+
+  telegram-bot:
+    build: telegram_bot
+    image: telegram_bot:1.0.0
+    restart: always
+    networks:
+        - telegram_ntwrk
+
+  proxy:
+    build: proxy
+    image: telegram_proxy:1.0.0
+    ports:
+        - "80:80"
+    networks:
+        - telegram_ntwrk
+networks:
+  telegram_ntwrk:
+      name: telegram_ntwrk
