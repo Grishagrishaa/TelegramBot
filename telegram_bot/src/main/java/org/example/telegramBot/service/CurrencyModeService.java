@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import java.util.HashMap;
 
 @Component
-public class CurrencyModeService {//todo interface
+public class CurrencyModeService {
     private final HashMap<Long, String> originalMemory = new HashMap<>();
     private final HashMap<Long, String> targetMemory = new HashMap<>();
 

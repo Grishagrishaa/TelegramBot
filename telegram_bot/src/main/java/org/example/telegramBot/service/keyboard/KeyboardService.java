@@ -1,7 +1,7 @@
 package org.example.telegramBot.service.keyboard;
 
 import org.example.telegramBot.service.CurrencyModeService;
-import org.example.telegramBot.service.FinanceService;
+import org.example.telegramBot.service.financeService.FinanceService;
 import org.example.telegramBot.service.keyboard.inlineKeyboard.AbstractInlineKeyboard;
 import org.example.telegramBot.service.keyboard.replyKeyboard.AbstractReplyKeyboard;
 import org.springframework.stereotype.Service;

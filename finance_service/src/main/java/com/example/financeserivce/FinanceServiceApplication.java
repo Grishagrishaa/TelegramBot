@@ -1,16 +1,10 @@
 package com.example.financeserivce;
 
-import com.example.financeserivce.dto.CurrencyMyfinDto;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+
 
 @SpringBootApplication
 public class FinanceServiceApplication {

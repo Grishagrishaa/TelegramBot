@@ -2,12 +2,14 @@ package org.example.telegramBot.service;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.example.telegramBot.service.enums.ECallbackAction;
-import org.example.telegramBot.service.impl.UserData;
-import org.example.telegramBot.service.impl.financeService.CurrencyMyfinDto;
-import org.example.telegramBot.service.impl.financeService.CurrencyMyfinNbrbDto;
+import org.example.telegramBot.service.financeService.FinanceService;
+import org.example.telegramBot.service.impl.userService.UserData;
+import org.example.telegramBot.service.impl.financeService.dto.CurrencyMyfinDto;
+import org.example.telegramBot.service.impl.financeService.dto.CurrencyMyfinNbrbDto;
 import org.example.telegramBot.service.impl.financeService.pagination.Page;
 import org.example.telegramBot.service.impl.financeService.pagination.PageRequest;
 import org.example.telegramBot.service.keyboard.KeyboardService;
+import org.example.telegramBot.service.userService.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClientException;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -133,19 +135,13 @@ public class BotService {
         final String text = message.getText();
 
         if (NumberUtils.isParsable(text.replaceAll("\\s+", ""))) {
-            return SendMessage.builder()
-                    .parseMode("HTML")
-                    .chatId(chatId.toString())
-                    .replyMarkup(keyboardService.getReplyKeyboard(text))
-                    .text(convert(chatId, text))
-                    .build();
+            return sendMessage(chatId,
+                    convert(chatId, text),
+                    keyboardService.getReplyKeyboard(text));
         }
-        return SendMessage.builder()
-                .parseMode("HTML")
-                .chatId(chatId.toString())
-                .replyMarkup(keyboardService.getReplyKeyboard(text))
-                .text(keyboardService.getMessage(text))
-                .build();
+        return sendMessage(chatId,
+                keyboardService.getMessage(text),
+                keyboardService.getReplyKeyboard(text));
 
     }
 
@@ -185,8 +181,8 @@ public class BotService {
     }
 
     private <G> String formMessageOfEntities(List<G> currencyDtos, String city){
-        stringBuffer.append("Лучшие курсы в городе - ")
-                    .append(city)
+        stringBuffer.append("Best courses in - ")
+                    .append(city != null ? city : "NBRB")
                     .append('\n')
                     .append('\n');
 
