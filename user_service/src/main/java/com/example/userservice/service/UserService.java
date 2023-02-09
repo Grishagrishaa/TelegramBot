@@ -11,7 +11,6 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.NoSuchElementException;
 
 @Service
@@ -30,11 +29,12 @@ public class UserService implements IUserService {
     public User getUser(Long userId) {
         logger.info("SERVICE | getUser() invocation, userId - {}", userId);
         try {
-            return repository.findById(userId).get();
+            return repository.findById(userId)
+                    .orElseThrow(NoSuchElementException::new);
         }catch (NoSuchElementException e){
             logger.error("CANNOT FIND BY ID - {}", e.getMessage());
+            throw e;
         }
-        throw new EntityNotFoundException("NOT FOUND");
     }
 
     @Override
@@ -44,9 +44,9 @@ public class UserService implements IUserService {
         User newUser = conversion.convert(userDto, User.class);
         try{
             repository.save(newUser);
-        }catch (Exception e){
-            logger.error("CANNOT saveUser() - {}, USER - {}", e.getMessage(), userDto.toString());
-            throw new IllegalArgumentException("USER WASN'T SAVED ");
+        }catch (IllegalArgumentException  e){
+            logger.error("CANNOT saveUser() - {}, USER - {}", e.getMessage(), userDto);
+            throw e;
         }
     }
 
@@ -60,7 +60,11 @@ public class UserService implements IUserService {
         if(dto.getCity() != null)user.setCity(dto.getCity());
         if(dto.getPageSize() != null)user.setPageSize(dto.getPageSize());
 
-        repository.save(user);
-        logger.info("SERVICE | UPDATE USER - {}, dto - {}", user, dto);
+        try{
+            repository.save(user);
+        }catch (IllegalArgumentException  e){
+            logger.error("CANNOT saveUser() - {}", e.getMessage());
+            throw e;
+        }
     }
 }

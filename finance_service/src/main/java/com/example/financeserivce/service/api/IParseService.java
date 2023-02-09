@@ -7,7 +7,7 @@ import com.example.financeserivce.enums.ERatesCurrency;
 
 import java.util.List;
 
-public interface IWebService {
+public interface IParseService {
     List<ICurrencyDto> getMyfinRates(ECity city, ERatesCurrency currency);
 
     Double getConversionRatio(EConvertCurrency original, EConvertCurrency target);

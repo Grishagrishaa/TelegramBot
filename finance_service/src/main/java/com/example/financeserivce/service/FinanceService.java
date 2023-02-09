@@ -5,7 +5,7 @@ import com.example.financeserivce.enums.ECity;
 import com.example.financeserivce.enums.EConvertCurrency;
 import com.example.financeserivce.enums.ERatesCurrency;
 import com.example.financeserivce.service.api.IFinanceService;
-import com.example.financeserivce.service.api.IWebService;
+import com.example.financeserivce.service.api.IParseService;
 import com.example.financeserivce.service.pagination.Page;
 import com.example.financeserivce.service.pagination.PageRequest;
 import org.springframework.stereotype.Service;
@@ -14,9 +14,9 @@ import java.util.List;
 
 @Service
 public class FinanceService implements IFinanceService {
-    private final IWebService webService;
+    private final IParseService webService;
 
-    public FinanceService(IWebService webService) {
+    public FinanceService(IParseService webService) {
         this.webService = webService;
     }
 

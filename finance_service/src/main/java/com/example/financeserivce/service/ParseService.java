@@ -7,7 +7,7 @@ import com.example.financeserivce.dto.api.ICurrencyDto;
 import com.example.financeserivce.enums.ECity;
 import com.example.financeserivce.enums.EConvertCurrency;
 import com.example.financeserivce.enums.ERatesCurrency;
-import com.example.financeserivce.service.api.IWebService;
+import com.example.financeserivce.service.api.IParseService;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -25,15 +25,15 @@ import java.util.List;
 import java.util.function.Predicate;
 
 @Service
-public class WebService implements IWebService {
+public class ParseService implements IParseService {
     @Value("${app.myfin.url}")
     private String BASE_MYFIN_URL;
 
-    private final Logger logger = LoggerFactory.getLogger(WebService.class);
+    private final Logger logger = LoggerFactory.getLogger(ParseService.class);
     private final WebClient webClient;
     private final Predicate<List<String>> nameTest;
 
-    public WebService(WebClient webClient, Predicate<List<String>> nameTest) {
+    public ParseService(WebClient webClient, Predicate<List<String>> nameTest) {
         this.webClient = webClient;
         this.nameTest = nameTest;
     }
@@ -119,7 +119,7 @@ public class WebService implements IWebService {
 
     private ICurrencyDto mapCurrencyDto(List<String>currencyValues, ECity city, ERatesCurrency currency){
         if(city == ECity.NBRB){
-            CurrencyMyfinNbrbDto dto = null;
+            CurrencyMyfinNbrbDto dto;
             if(currencyValues.size() == 5){
                 dto = CurrencyMyfinNbrbDto.Builder
                         .create()
